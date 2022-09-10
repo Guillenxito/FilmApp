@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FilmApp</string>
+    <string name="original_lenguage">Original language</string>
+    <string name="original_title">Original title</string>
+    <string name="release_date">Release date</string>
+    <string name="popularity">Popularity</string>
+    <string name="vote_average">Vote Average</string>
+</resources>
