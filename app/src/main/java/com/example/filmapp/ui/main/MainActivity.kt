@@ -19,14 +19,20 @@ import com.example.filmapp.ui.detail.DetailActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        private const val DEFAULT_REGION = "US"
+    }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val moviesAdapter = MoviesAdapter(emptyList()) { navigateTo(it) }
     private val requestPermissionLauncher =
     registerForActivityResult( ActivityResultContracts.RequestPermission()) { isGranted ->
-       requestPopularMovies(isGranted)
+        doRequestPopularMovies(isGranted)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,29 +50,30 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @SuppressLint("MissingPermission")
-    private fun requestPopularMovies(isLocationGranted: Boolean) {
-        if ( isLocationGranted ) {
-            fusedLocationClient.lastLocation.addOnCompleteListener {
-                doRequestPopularMovies(getRegionFromLocation(it.result))
-            }
-        }else{
-            doRequestPopularMovies("US")
-        }
-    }
-
-    private fun doRequestPopularMovies(region: String) {
+    private fun doRequestPopularMovies(isLocationGranted: Boolean) {
         lifecycleScope.launch{
             val apiKey= getString(R.string.api_key)
+            val region = getRegion(isLocationGranted)
             val popularMovies: MovieDbResult = MovieDbClient.service.listPopularMovies(apiKey,region)
             moviesAdapter.movies = popularMovies.results
             moviesAdapter.notifyDataSetChanged()
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private suspend fun getRegion(isLocationGranted: Boolean): String = suspendCancellableCoroutine{ continuation ->
+        if ( isLocationGranted ) {
+            fusedLocationClient.lastLocation.addOnCompleteListener {
+                continuation.resume(getRegionFromLocation(it.result))
+            }
+        }else{
+            continuation.resume(DEFAULT_REGION)
+        }
+    }
+
     private fun getRegionFromLocation(location: Location?): String {
         if(location == null){
-            return "US"
+            return DEFAULT_REGION
         }
         val geocoder = Geocoder(this)
         val result = geocoder.getFromLocation(
@@ -74,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             location.longitude,
             1
         )
-        return result.firstOrNull()?.countryCode ?: "US"
+        return result.firstOrNull()?.countryCode ?: DEFAULT_REGION
     }
 
     private fun navigateTo(movie: Movie){
