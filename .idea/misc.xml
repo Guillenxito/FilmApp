@@ -3,10 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Aguil/AndroidStudioProjects/FilmApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.146" />
         <entry key="..\:/Users/Aguil/AndroidStudioProjects/FilmApp/app/src/main/res/layout/activity_detail.xml" value="0.1648148148148148" />
         <entry key="..\:/Users/Aguil/AndroidStudioProjects/FilmApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/Aguil/AndroidStudioProjects/FilmApp/app/src/main/res/layout/styles.xml" value="0.33967391304347827" />
         <entry key="..\:/Users/Aguil/AndroidStudioProjects/FilmApp/app/src/main/res/layout/view_movie_item.xml" value="0.22" />
+        <entry key="..\:/Users/Aguil/AndroidStudioProjects/FilmApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.146" />
       </map>
     </option>
   </component>
