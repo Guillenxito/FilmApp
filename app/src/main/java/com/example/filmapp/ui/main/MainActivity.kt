@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.filmapp.R
 import com.example.filmapp.databinding.ActivityMainBinding
 import com.example.filmapp.model.Movie
+import com.example.filmapp.model.MovieDatabase
 import com.example.filmapp.model.MovieDbClient
 import com.example.filmapp.model.MovieDbResult
 import com.example.filmapp.ui.detail.DetailActivity
@@ -37,14 +38,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val binding:ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-
         binding.recycler.adapter = moviesAdapter
-
         requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
 
     }

@@ -3,6 +3,7 @@ package com.example.filmapp.ui.detail
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.widget.TextView
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.filmapp.R
 import com.example.filmapp.databinding.ActivityDetailBinding
 import com.example.filmapp.model.Movie
+import kotlinx.android.synthetic.main.activity_detail.view.*
 
 class DetailActivity : AppCompatActivity() {
 
@@ -20,6 +22,8 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled( true )
         val movie = intent.getParcelableExtra<Movie>(EXTRA_MOVIE)
         if(movie !== null){
             title = movie.title
@@ -27,8 +31,11 @@ class DetailActivity : AppCompatActivity() {
                 .load("https://image.tmdb.org/t/p/w780${movie.backdrop_path}")
                 .into(binding.backdrop);
             binding.summary.text = movie.overview
-
             bindDetailIndo(binding.detailInfo, movie)
+            binding.fab.setOnClickListener{
+                // Poner el drawable ic_favorite.xml
+                Log.d("fab","ME GUSTA ESTA PELI: ${movie.title}")
+            }
         }
 
     }
